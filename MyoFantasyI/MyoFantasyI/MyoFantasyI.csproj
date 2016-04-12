@@ -173,6 +173,13 @@
     <Content Include="Images\background.jpg" />
     <Content Include="Images\character.png" />
     <Content Include="Images\enemy1.png" />
+    <Content Include="Sounds\enemyAttack.wav" />
+    <Content Include="Sounds\enemyHealing.wav" />
+    <Content Include="Sounds\enemyRage.wav" />
+    <Content Include="Sounds\enemyWonSound.wav" />
+    <Content Include="Sounds\healing2.wav" />
+    <Content Include="Sounds\playerRage2.wav" />
+    <Content Include="Sounds\sword2.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
