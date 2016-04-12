@@ -1,0 +1,10 @@
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\bin\Debug\MyoFantasyI.exe.config
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\bin\Debug\MyoFantasyI.exe
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\bin\Debug\MyoFantasyI.pdb
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\obj\Debug\MyoFantasyI.csprojResolveAssemblyReference.cache
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\obj\Debug\MyoFantasyI.Form1.resources
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\obj\Debug\MyoFantasyI.Properties.Resources.resources
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\obj\Debug\MyoFantasyI.csproj.GenerateResource.Cache
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\obj\Debug\MyoFantasyI.rewritten
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\obj\Debug\MyoFantasyI.exe
+C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\obj\Debug\MyoFantasyI.pdb
