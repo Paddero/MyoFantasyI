@@ -63,6 +63,16 @@ namespace MyoFantasyI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap armDown {
+            get {
+                object obj = ResourceManager.GetObject("armDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap background {
             get {
                 object obj = ResourceManager.GetObject("background", resourceCulture);
@@ -86,6 +96,46 @@ namespace MyoFantasyI.Properties {
         internal static System.Drawing.Bitmap enemy1 {
             get {
                 object obj = ResourceManager.GetObject("enemy1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap newBackground {
+            get {
+                object obj = ResourceManager.GetObject("newBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap rageAbilityPic {
+            get {
+                object obj = ResourceManager.GetObject("rageAbilityPic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap waveLeft {
+            get {
+                object obj = ResourceManager.GetObject("waveLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap waveRight {
+            get {
+                object obj = ResourceManager.GetObject("waveRight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

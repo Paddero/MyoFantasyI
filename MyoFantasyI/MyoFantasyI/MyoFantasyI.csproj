@@ -170,9 +170,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\armDown.png" />
     <Content Include="Images\background.jpg" />
     <Content Include="Images\character.png" />
+    <Content Include="Images\doubleTap.png" />
     <Content Include="Images\enemy1.png" />
+    <Content Include="Images\enemy2.jpg" />
+    <Content Include="Images\enemy3.jpg" />
+    <Content Include="Images\fist.png" />
+    <Content Include="Images\newBackground.jpg" />
+    <None Include="Images\rageAbilityPic.png" />
+    <Content Include="Images\spreadFingers.png" />
+    <Content Include="Images\waveLeft.png" />
+    <Content Include="Images\waveRight.png" />
     <Content Include="Sounds\enemyAttack.wav" />
     <Content Include="Sounds\enemyHealing.wav" />
     <Content Include="Sounds\enemyRage.wav" />

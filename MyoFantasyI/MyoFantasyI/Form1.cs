@@ -25,11 +25,13 @@ namespace MyoFantasyI
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         SoundPlayer swordSlash = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\sword2.wav");
         SoundPlayer playerHeal = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\healing2.wav");
-        SoundPlayer playerRageAbility = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\playerRage2.wav");
+        SoundPlayer playerRageAbility = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\swordRage.wav");
         SoundPlayer enemyAttackSound = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\enemyAttack.wav");
         SoundPlayer enemyHealingSound = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\enemyHealing.wav");
         SoundPlayer enemyRageSound = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\enemyRage.wav");
         SoundPlayer enemyWonSound = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\enemyWonSound.wav");
+        SoundPlayer playerWonSound = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\youWin.wav");
+
 
         private Boolean isGameStarted = false;
         private Boolean isPlayerMove;
@@ -104,17 +106,42 @@ namespace MyoFantasyI
 
             var sequence = PoseSequence.Create(
                         e.Myo,
-                        Pose.Fist,
                         Pose.DoubleTap,
+                        Pose.Fist,
                         Pose.FingersSpread);
             sequence.PoseSequenceCompleted += sequence_PoseSequenceCompleted;
 
+            e.Myo.PoseChanged += Myo_PoseChanged;
+
+            e.Myo.OrientationDataAcquired += Myo_OrientationDataAcquired;
             if (isConnectedLbl.InvokeRequired)
             {
                 isConnectedLbl.Invoke(new MethodInvoker(delegate { isConnectedLbl.Text = status; }));
             }
 
-            e.Myo.PoseChanged += Myo_PoseChanged;
+            
+        }
+
+        private void Myo_OrientationDataAcquired(object sender, OrientationDataEventArgs e)
+        {
+            const float PI = (float)System.Math.PI;
+
+            // convert the values to a 0-9 scale (for easier digestion/understanding)
+            var roll = (int)((e.Roll + PI) / (PI * 2.0f) * 10);
+            var pitch = (int)((e.Pitch + PI) / (PI * 2.0f) * 10);
+            var yaw = (int)((e.Yaw + PI) / (PI * 2.0f) * 10);
+
+            if(roll <= 3 && pitch <= 3 && isPlayerMove == true && isGameStarted == true)
+            {
+                if (playerRage >= 1)
+                {
+                    updateBuffMove();
+                }
+                else
+                {
+                    statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You do not have enough rage to Buff!"; }));
+                }
+            }
         }
 
         private void sequence_PoseSequenceCompleted(object sender, PoseSequenceEventArgs e)
@@ -122,6 +149,7 @@ namespace MyoFantasyI
             if (isGameStarted == true && isPlayerMove == true && playerRage >= 5)
             {
                 updateRageAbilityMove();
+                playerRageAbility.Play();
                 e.Myo.Vibrate(VibrationType.Medium);
             }
             else if (isGameStarted == true && isPlayerMove == true && playerRage < 5)
@@ -137,8 +165,10 @@ namespace MyoFantasyI
                 if(isGameStarted == false)
                 {
                     startGame();
+                    e.Myo.Vibrate(VibrationType.Medium);
                     timeLeft = 30;
                     isGameStarted = true;
+                    isGameOver = false;
                 }                  
             }
 
@@ -153,7 +183,7 @@ namespace MyoFantasyI
 
             if (e.Myo.Pose == Pose.WaveOut)
             {
-                if (isPlayerMove == true && isGameStarted == true && playerRage >= 2 && isGameOver == false)
+                if (isPlayerMove == true && isGameStarted == true && playerRage >= 1 && isGameOver == false)
                 {
                     playerHeal.Play();
                     updateHealMove();
@@ -173,41 +203,51 @@ namespace MyoFantasyI
 
         void timer_Tick(object sender, EventArgs e)
         {
-            timeLeft -= 5;
-            timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Text = ""; }));
-            if (timeLeft < 10 && timeLeft > 0)
+            if(isGameOver == true)
             {
-                timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Text = "You only have 10 seconds left!"; }));               
+                gameOver();
+                
             }
-            else if (timeLeft <= 0)
+            else
             {
-                timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Text = ""; })); 
-                if (isPlayerMove == true)
+                timeLeft -= 5;
+                timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Text = ""; }));
+                if (timeLeft < 10 && timeLeft > 0)
                 {
-                    timeLeft = 30;
-                    isPlayerMove = false;
-                    isEnemyMove = true;
+                    timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Text = "You only have 10 seconds left!"; }));
                 }
-            }
-
-            if (isGameStarted == true)
-            {
-                if (timeLeft <= 25 && isEnemyMove == false)
+                else if (timeLeft <= 0)
                 {
-                    isPlayerMove = true;
-                    //statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "It's your move!"; }));
-                }
-                else if (isEnemyMove == true)
-                {
-                    //setTimeLeft();
-                    //statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "It's enemies move!"; }));
-
-                    if (timeLeft <= 20)
+                    timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Text = ""; }));
+                    if (isPlayerMove == true)
                     {
-                        enemiesMove();
+                        timeLeft = 30;
+
+                        statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You missed your move!\n\tEnemies move!"; }));
+                        isPlayerMove = false;
+                        isEnemyMove = true;
                     }
                 }
-            }
+
+                if (isGameStarted == true)
+                {
+                    if (timeLeft <= 25 && isEnemyMove == false)
+                    {
+                        isPlayerMove = true;
+                        //statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "It's your move!"; }));
+                    }
+                    else if (isEnemyMove == true)
+                    {
+                        //setTimeLeft();
+                        //statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "It's enemies move!"; }));
+
+                        if (timeLeft <= 20)
+                        {
+                            enemiesMove();
+                        }
+                    }
+                }
+            }            
         }
 
         private void setPlayer()
@@ -216,7 +256,7 @@ namespace MyoFantasyI
             playerCurrHealth = playerHealth;
             playerAttack = 125;
             playerMagic = 150;
-            playerRage = 0;
+            playerRage = 6;
             playerRageStatus = "Medium";
             isPlayerMove = true;
         }
@@ -229,7 +269,10 @@ namespace MyoFantasyI
             if (enemyCurrHealth <= 0)
             {
                 whoWon = 2;
-                gameOver();
+                isGameOver = true;
+                enemyCurrHealth = 0;
+                enemyHP.Invoke(new MethodInvoker(delegate { enemyHP.Text = "Health: " + enemyCurrHealth.ToString(); }));
+                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You dealt " + attackStrength.ToString() + " damage to the enemy!\n\tEnemy defeated!"; }));
             }
             else
             {
@@ -244,7 +287,7 @@ namespace MyoFantasyI
 
                 enemyHP.Invoke(new MethodInvoker(delegate { enemyHP.Text = "Health: " + enemyCurrHealth.ToString(); }));
                 enemyRagelbl.Invoke(new MethodInvoker(delegate { enemyRagelbl.Text = "Rage: " + enemyRage.ToString() + " / 10."; }));
-                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You dealt " + attackStrength.ToString() + " damage to the enemy!\n\n\tEnemies move!"; }));
+                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You dealt " + attackStrength.ToString() + " damage to the enemy!\n\tEnemies move!"; }));
                 isPlayerMove = false;
                 isEnemyMove = true;
                 timeLeft = 30;
@@ -256,14 +299,14 @@ namespace MyoFantasyI
             int healAmount = rnd.Next((playerMagic / 2), playerMagic);
             playerCurrHealth += healAmount;
             //2 rage is taken when healed
-            playerRage -= 2;
+            playerRage -= 1;
 
             if (playerCurrHealth > playerHealth)
                 playerCurrHealth = playerHealth;
                 
             playerHP.Invoke(new MethodInvoker(delegate { playerHP.Text = "Health: " + playerCurrHealth.ToString(); }));
             playerRagelbl.Invoke(new MethodInvoker(delegate { playerRagelbl.Text = "Rage: " + playerRage.ToString() + " / 10."; }));
-            statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You healed yourself by " + healAmount.ToString() + " hit points!\n\n\tEnemies move!"; }));
+            statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You healed yourself by " + healAmount.ToString() + " hit points!\n\tEnemies move!"; }));
             checkIfPlayerCanUseRageAbility();
             isPlayerMove = false;
             isEnemyMove = true;           
@@ -281,7 +324,10 @@ namespace MyoFantasyI
             if (enemyCurrHealth <= 0)
             {
                 whoWon = 2;
-                gameOver();
+                isGameOver = true;
+                enemyCurrHealth = 0;
+                enemyHP.Invoke(new MethodInvoker(delegate { enemyHP.Text = "Health: " + enemyCurrHealth.ToString(); }));
+                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You dealt " + attackStrength.ToString() + " damage to the enemy!\n\tEnemy defeated!"; }));
             }
             else
             {
@@ -303,7 +349,7 @@ namespace MyoFantasyI
                 playerHP.Invoke(new MethodInvoker(delegate { playerHP.Text = "Health: " + playerCurrHealth.ToString(); }));
                 playerRagelbl.Invoke(new MethodInvoker(delegate { playerRagelbl.Text = "Rage: " + playerRage.ToString() + " / 10."; }));
                 enemyRagelbl.Invoke(new MethodInvoker(delegate { enemyRagelbl.Text = "Rage: " + enemyRage.ToString() + " / 10."; }));
-                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You dealt " + attackStrength.ToString() + " damage to enemy, \n and healed yourself by " + healAmount.ToString() + " hit points!\n\n\tEnemies move!"; }));
+                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You dealt " + attackStrength.ToString() + " damage to enemy, \nand healed yourself by " + healAmount.ToString() + " hit points!\n\tEnemies move!"; }));
                 checkIfPlayerCanUseRageAbility();
                 isPlayerMove = false;
                 isEnemyMove = true;
@@ -311,12 +357,24 @@ namespace MyoFantasyI
             }     
         }
 
+        private void updateBuffMove()
+        {
+            playerAttack += 5;
+            playerRage -= 1;
+            playerRagelbl.Invoke(new MethodInvoker(delegate { playerRagelbl.Text = "Rage: " + playerRage.ToString() + " / 10."; }));
+            playerAtklbl.Invoke(new MethodInvoker(delegate { playerAtklbl.Text = "Max. Attack : " + playerAttack.ToString(); }));
+            statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You buffed your attack by 5 damage!\n\tEnemies move!"; }));
+            isPlayerMove = false;
+            isEnemyMove = true;
+            timeLeft = 30;
+        }
+
         private void gameOver()
         {
             isPlayerMove = false;
             isEnemyMove = false;
             isGameOver = true;
-
+            isGameStarted = false;          
             enemyPic.Invoke(new MethodInvoker(delegate { enemyPic.Visible = false; }));
             characterPic.Invoke(new MethodInvoker(delegate { characterPic.Visible = false; }));
             playerHP.Invoke(new MethodInvoker(delegate { playerHP.Visible = false; }));
@@ -327,20 +385,33 @@ namespace MyoFantasyI
             timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Visible = false; }));
             attacklbl.Invoke(new MethodInvoker(delegate { attacklbl.Visible = false; }));
             heallbl.Invoke(new MethodInvoker(delegate { heallbl.Visible = false; }));
+            bufflbl.Invoke(new MethodInvoker(delegate { bufflbl.Visible = false; }));
             playerAtklbl.Invoke(new MethodInvoker(delegate { playerAtklbl.Visible = false; }));
             playerMagiclbl.Invoke(new MethodInvoker(delegate { playerMagiclbl.Visible = false; }));
             playerRageStatuslbl.Invoke(new MethodInvoker(delegate { playerRageStatuslbl.Visible = false; }));
             enemyAtklbl.Invoke(new MethodInvoker(delegate { enemyAtklbl.Visible = false; }));
             enemyMagiclbl.Invoke(new MethodInvoker(delegate { enemyMagiclbl.Visible = false; }));
             enemyRageStatuslbl.Invoke(new MethodInvoker(delegate { enemyRageStatuslbl.Visible = false; }));
-
+            waveLeftPic.Invoke(new MethodInvoker(delegate { waveLeftPic.Visible = false; }));
+            waveRightPic.Invoke(new MethodInvoker(delegate { waveRightPic.Visible = false; }));
+            armDownPic.Invoke(new MethodInvoker(delegate { armDownPic.Visible = false; }));
+            rageAbilityPic.Invoke(new MethodInvoker(delegate { rageAbilityPic.Visible = false; }));
+            rageAbilitylbl.Invoke(new MethodInvoker(delegate { rageAbilitylbl.Visible = false; }));
+            
             if (whoWon == 1)
             {
-
+                youLoselbl.Invoke(new MethodInvoker(delegate { youLoselbl.Visible = true; }));
+                startAgainlbl.Invoke(new MethodInvoker(delegate { startAgainlbl.Visible = true; }));
+                enemyWonSound.Play();
+                whoWon = 0;
             }
             else if (whoWon == 2)
             {
-
+                youWinlbl.Invoke(new MethodInvoker(delegate { youWinlbl.Visible = true; }));
+                startAgainlbl.Invoke(new MethodInvoker(delegate { startAgainlbl.Visible = true; }));
+                playerWonSound.Play();
+                whoWon = 0;
+                //enemyWonSound.Play();
             }
         }
 
@@ -350,7 +421,7 @@ namespace MyoFantasyI
             //Change this later
             if(enemyRage >= 5)
             {
-                //If rage is greater or equal to 5, can use any ability. Generate 3/4 as well to give better chance for rage ability
+                //If rage is greater or equal to 5, can use any ability. Having max number to 3, I found it to generate max number very rarely.
                 enemiesMove = rnd.Next(1, 4);
             }
             else if(enemyRage < 5 && enemyRage > 3)
@@ -395,7 +466,10 @@ namespace MyoFantasyI
             if (playerCurrHealth <= 0)
             {
                 whoWon = 1;
-                gameOver();
+                playerCurrHealth = 0;
+                isGameOver = true;
+                playerHP.Invoke(new MethodInvoker(delegate { playerHP.Text = "Health: " + playerCurrHealth.ToString(); }));
+                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy dealt " + attackStrength.ToString() + " damage to you!\n\tYou died!"; }));
             }
             else
             {
@@ -410,7 +484,7 @@ namespace MyoFantasyI
 
                 playerHP.Invoke(new MethodInvoker(delegate { playerHP.Text = "Health: " + playerCurrHealth.ToString(); }));
                 playerRagelbl.Invoke(new MethodInvoker(delegate { playerRagelbl.Text = "Rage: " + playerRage.ToString() + " / 10."; }));
-                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy dealt " + attackStrength.ToString() + " damage to you!\n\n\tIt's your move!"; }));
+                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy dealt " + attackStrength.ToString() + " damage to you!\n\tIt's your move!"; }));
                 checkIfPlayerCanUseRageAbility();
                 isEnemyMove = false;
                 timeLeft = 30;
@@ -429,7 +503,7 @@ namespace MyoFantasyI
 
             enemyHP.Invoke(new MethodInvoker(delegate { enemyHP.Text = "Health: " + enemyCurrHealth.ToString(); }));
             enemyRagelbl.Invoke(new MethodInvoker(delegate { enemyRagelbl.Text = "Rage: " + enemyRage.ToString() + " / 10."; }));
-            statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy healed himself by " + healAmount.ToString() + " hit points!\n\n\tIt's your move!"; }));
+            statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy healed himself by " + healAmount.ToString() + " hit points!\n\tIt's your move!"; }));
             //isPlayerMove = true;
             isEnemyMove = false;
             timeLeft = 30;
@@ -445,7 +519,10 @@ namespace MyoFantasyI
             if(playerCurrHealth <= 0)
             {
                 whoWon = 1;
-                gameOver();
+                playerCurrHealth = 0;
+                isGameOver = true;
+                playerHP.Invoke(new MethodInvoker(delegate { playerHP.Text = "Health: " + playerCurrHealth.ToString(); }));
+                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy dealt " + attackStrength.ToString() + " damage to you!\n\tYou died!"; }));
             }
             else
             {
@@ -471,8 +548,7 @@ namespace MyoFantasyI
                 playerHP.Invoke(new MethodInvoker(delegate { playerHP.Text = "Health: " + playerCurrHealth.ToString(); }));
                 playerRagelbl.Invoke(new MethodInvoker(delegate { playerRagelbl.Text = "Rage: " + playerRage.ToString() + " / 10."; }));
                 enemyRagelbl.Invoke(new MethodInvoker(delegate { enemyRagelbl.Text = "Rage: " + enemyRage.ToString() + " / 10."; }));
-                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy dealt " + attackStrength.ToString() + " damage to you,\nand healed himself by " + healAmount.ToString() + " hit points!\n\n\tIt's your move!"; }));
-                //isPlayerMove = true;
+                statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy dealt " + attackStrength.ToString() + " damage to you,\nand healed himself by " + healAmount.ToString() + " hit points!\n\tIt's your move!"; }));
                 checkIfPlayerCanUseRageAbility();
                 isEnemyMove = false;
                 timeLeft = 30;
@@ -489,6 +565,7 @@ namespace MyoFantasyI
             enemyHP.Invoke(new MethodInvoker(delegate { enemyHP.Visible = true; }));
             enemyHP.Invoke(new MethodInvoker(delegate { enemyHP.Text = "Health: " + enemyCurrHealth.ToString(); }));
             statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Visible = true; }));
+            statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "It's your move! Use any gestures."; }));
             enemyRagelbl.Invoke(new MethodInvoker(delegate { enemyRagelbl.Visible = true; }));
             enemyRagelbl.Invoke(new MethodInvoker(delegate { enemyRagelbl.Text = "Rage: " + enemyRage.ToString() + " / 10."; }));
             playerRagelbl.Invoke(new MethodInvoker(delegate { playerRagelbl.Visible = true; }));
@@ -496,6 +573,7 @@ namespace MyoFantasyI
             timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Visible = true; }));
             attacklbl.Invoke(new MethodInvoker(delegate { attacklbl.Visible = true; }));
             heallbl.Invoke(new MethodInvoker(delegate { heallbl.Visible = true; }));
+            bufflbl.Invoke(new MethodInvoker(delegate { bufflbl.Visible = true; }));
             howToStartlbl.Invoke(new MethodInvoker(delegate { howToStartlbl.Visible = false; }));
             playerAtklbl.Invoke(new MethodInvoker(delegate { playerAtklbl.Text = "Max. Attack : " + playerAttack.ToString(); }));
             playerAtklbl.Invoke(new MethodInvoker(delegate { playerAtklbl.Visible = true; }));
@@ -509,6 +587,13 @@ namespace MyoFantasyI
             enemyMagiclbl.Invoke(new MethodInvoker(delegate { enemyMagiclbl.Visible = true; }));
             enemyRageStatuslbl.Invoke(new MethodInvoker(delegate { enemyRageStatuslbl.Text = "Rage Threat : " + enemyRageStatus; }));
             enemyRageStatuslbl.Invoke(new MethodInvoker(delegate { enemyRageStatuslbl.Visible = true; }));
+            waveLeftPic.Invoke(new MethodInvoker(delegate { waveLeftPic.Visible = true; }));
+            waveRightPic.Invoke(new MethodInvoker(delegate { waveRightPic.Visible = true; }));
+            armDownPic.Invoke(new MethodInvoker(delegate { armDownPic.Visible = true; }));
+            youLoselbl.Invoke(new MethodInvoker(delegate { youLoselbl.Visible = false; }));
+            youWinlbl.Invoke(new MethodInvoker(delegate { youWinlbl.Visible = false; }));
+            startAgainlbl.Invoke(new MethodInvoker(delegate { startAgainlbl.Visible = false; }));
+
         }
 
         private void checkIfPlayerCanUseRageAbility()
@@ -516,16 +601,18 @@ namespace MyoFantasyI
             if (playerRage >= 5)
             {
                 rageAbilitylbl.Invoke(new MethodInvoker(delegate { rageAbilitylbl.Visible = true; }));
+                rageAbilityPic.Invoke(new MethodInvoker(delegate { rageAbilityPic.Visible = true; }));
             }
             else
             {
                 rageAbilitylbl.Invoke(new MethodInvoker(delegate { rageAbilitylbl.Visible = false; }));
+                rageAbilityPic.Invoke(new MethodInvoker(delegate { rageAbilityPic.Visible = false; }));
             }
         }
 
         private void generateRandomEnemy()
         {
-            int enemy = 1;
+            int enemy = rnd.Next(1,4);
 
             switch (enemy)
             {
@@ -544,7 +631,7 @@ namespace MyoFantasyI
         private void enemy1()
         {
             enemyAttack = 100;
-            enemyHealth = 1500;
+            enemyHealth = 10;
             enemyCurrHealth = enemyHealth;
             enemyMagic = 100;
             enemyRage = 0;
@@ -556,13 +643,29 @@ namespace MyoFantasyI
         }
         private void enemy2()
         {
-            enemyAttack = 200;
-            enemyHealth = 750;
+            enemyAttack = 225;
+            enemyHealth = 50;
+            enemyCurrHealth = enemyHealth;
+            enemyMagic = 50;
+            enemyRage = 0;
+            enemyRageStatus = "High";
+            enemyPic.Invoke(new MethodInvoker(delegate
+            {
+                enemyPic.Image = Image.FromFile("C:/Users/Paddy/Desktop/MyoApp/MyoFantasyI/MyoFantasyI/Images/enemy2.jpg");
+            }));
         }
         private void enemy3()
         {
-            enemyAttack = 100;
-            enemyHealth = 1000;
+            enemyAttack = 175;
+            enemyHealth = 100;
+            enemyCurrHealth = enemyHealth;
+            enemyMagic = 25;
+            enemyRage = 0;
+            enemyRageStatus = "Medium";
+            enemyPic.Invoke(new MethodInvoker(delegate
+            {
+                enemyPic.Image = Image.FromFile("C:/Users/Paddy/Desktop/MyoApp/MyoFantasyI/MyoFantasyI/Images/enemy3.jpg");
+            }));
         }
     }
 }
