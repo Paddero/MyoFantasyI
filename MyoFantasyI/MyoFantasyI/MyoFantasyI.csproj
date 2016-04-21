@@ -178,8 +178,10 @@
     <Content Include="Images\enemy2.jpg" />
     <Content Include="Images\enemy3.jpg" />
     <Content Include="Images\fist.png" />
+    <None Include="Images\greenLight.png" />
     <Content Include="Images\newBackground.jpg" />
     <None Include="Images\rageAbilityPic.png" />
+    <None Include="Images\redLight.png" />
     <Content Include="Images\spreadFingers.png" />
     <Content Include="Images\waveLeft.png" />
     <Content Include="Images\waveRight.png" />

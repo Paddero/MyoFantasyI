@@ -55,12 +55,16 @@
             this.youWinlbl = new System.Windows.Forms.Label();
             this.youLoselbl = new System.Windows.Forms.Label();
             this.startAgainlbl = new System.Windows.Forms.Label();
+            this.playerMovepic = new System.Windows.Forms.PictureBox();
+            this.enemyMovepic = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.characterPic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.enemyPic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.waveLeftPic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.armDownPic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.waveRightPic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rageAbilityPic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerMovepic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.enemyMovepic)).BeginInit();
             this.SuspendLayout();
             // 
             // isConnectedLbl
@@ -114,7 +118,7 @@
             this.playerHP.BackColor = System.Drawing.Color.Black;
             this.playerHP.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.playerHP.ForeColor = System.Drawing.Color.Red;
-            this.playerHP.Location = new System.Drawing.Point(240, 199);
+            this.playerHP.Location = new System.Drawing.Point(231, 199);
             this.playerHP.Name = "playerHP";
             this.playerHP.Size = new System.Drawing.Size(87, 29);
             this.playerHP.TabIndex = 4;
@@ -136,13 +140,12 @@
             // 
             // statusLbl
             // 
-            this.statusLbl.AutoSize = true;
             this.statusLbl.BackColor = System.Drawing.Color.Transparent;
             this.statusLbl.Font = new System.Drawing.Font("Sitka Subheading", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statusLbl.ForeColor = System.Drawing.Color.White;
-            this.statusLbl.Location = new System.Drawing.Point(624, 811);
+            this.statusLbl.ForeColor = System.Drawing.Color.Black;
+            this.statusLbl.Location = new System.Drawing.Point(623, 817);
             this.statusLbl.Name = "statusLbl";
-            this.statusLbl.Size = new System.Drawing.Size(216, 53);
+            this.statusLbl.Size = new System.Drawing.Size(709, 200);
             this.statusLbl.TabIndex = 6;
             this.statusLbl.Text = "Your Move.";
             this.statusLbl.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -153,7 +156,7 @@
             this.attacklbl.AutoSize = true;
             this.attacklbl.BackColor = System.Drawing.Color.Black;
             this.attacklbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.attacklbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.attacklbl.ForeColor = System.Drawing.Color.OrangeRed;
             this.attacklbl.Location = new System.Drawing.Point(61, 524);
             this.attacklbl.Name = "attacklbl";
             this.attacklbl.Size = new System.Drawing.Size(84, 174);
@@ -167,7 +170,7 @@
             this.heallbl.AutoSize = true;
             this.heallbl.BackColor = System.Drawing.Color.Black;
             this.heallbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.heallbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.heallbl.ForeColor = System.Drawing.Color.OrangeRed;
             this.heallbl.Location = new System.Drawing.Point(492, 524);
             this.heallbl.Name = "heallbl";
             this.heallbl.Size = new System.Drawing.Size(72, 174);
@@ -182,7 +185,7 @@
             this.timerlbl.BackColor = System.Drawing.Color.Black;
             this.timerlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timerlbl.ForeColor = System.Drawing.SystemColors.Control;
-            this.timerlbl.Location = new System.Drawing.Point(428, 931);
+            this.timerlbl.Location = new System.Drawing.Point(214, 953);
             this.timerlbl.Name = "timerlbl";
             this.timerlbl.Size = new System.Drawing.Size(104, 25);
             this.timerlbl.TabIndex = 9;
@@ -194,7 +197,7 @@
             this.enemyRagelbl.AutoSize = true;
             this.enemyRagelbl.BackColor = System.Drawing.Color.Black;
             this.enemyRagelbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.enemyRagelbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.enemyRagelbl.ForeColor = System.Drawing.Color.OrangeRed;
             this.enemyRagelbl.Location = new System.Drawing.Point(1820, 291);
             this.enemyRagelbl.Name = "enemyRagelbl";
             this.enemyRagelbl.Size = new System.Drawing.Size(70, 29);
@@ -207,7 +210,7 @@
             this.playerRagelbl.AutoSize = true;
             this.playerRagelbl.BackColor = System.Drawing.Color.Black;
             this.playerRagelbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.playerRagelbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.playerRagelbl.ForeColor = System.Drawing.Color.OrangeRed;
             this.playerRagelbl.Location = new System.Drawing.Point(474, 291);
             this.playerRagelbl.Name = "playerRagelbl";
             this.playerRagelbl.Size = new System.Drawing.Size(70, 29);
@@ -220,7 +223,7 @@
             this.rageAbilitylbl.AutoSize = true;
             this.rageAbilitylbl.BackColor = System.Drawing.Color.Black;
             this.rageAbilitylbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rageAbilitylbl.ForeColor = System.Drawing.Color.Gold;
+            this.rageAbilitylbl.ForeColor = System.Drawing.Color.OrangeRed;
             this.rageAbilitylbl.Location = new System.Drawing.Point(251, 748);
             this.rageAbilitylbl.Name = "rageAbilitylbl";
             this.rageAbilitylbl.Size = new System.Drawing.Size(196, 174);
@@ -234,7 +237,7 @@
             this.playerAtklbl.AutoSize = true;
             this.playerAtklbl.BackColor = System.Drawing.Color.Black;
             this.playerAtklbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.playerAtklbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.playerAtklbl.ForeColor = System.Drawing.Color.GreenYellow;
             this.playerAtklbl.Location = new System.Drawing.Point(7, 349);
             this.playerAtklbl.Name = "playerAtklbl";
             this.playerAtklbl.Size = new System.Drawing.Size(141, 29);
@@ -247,7 +250,7 @@
             this.playerMagiclbl.AutoSize = true;
             this.playerMagiclbl.BackColor = System.Drawing.Color.Black;
             this.playerMagiclbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.playerMagiclbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.playerMagiclbl.ForeColor = System.Drawing.Color.ForestGreen;
             this.playerMagiclbl.Location = new System.Drawing.Point(9, 383);
             this.playerMagiclbl.Name = "playerMagiclbl";
             this.playerMagiclbl.Size = new System.Drawing.Size(137, 29);
@@ -260,7 +263,7 @@
             this.playerRageStatuslbl.AutoSize = true;
             this.playerRageStatuslbl.BackColor = System.Drawing.Color.Black;
             this.playerRageStatuslbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.playerRageStatuslbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.playerRageStatuslbl.ForeColor = System.Drawing.Color.DarkGreen;
             this.playerRageStatuslbl.Location = new System.Drawing.Point(2, 421);
             this.playerRageStatuslbl.Name = "playerRageStatuslbl";
             this.playerRageStatuslbl.Size = new System.Drawing.Size(143, 29);
@@ -273,7 +276,7 @@
             this.enemyRageStatuslbl.AutoSize = true;
             this.enemyRageStatuslbl.BackColor = System.Drawing.Color.Black;
             this.enemyRageStatuslbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.enemyRageStatuslbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.enemyRageStatuslbl.ForeColor = System.Drawing.Color.DarkGreen;
             this.enemyRageStatuslbl.Location = new System.Drawing.Point(1341, 421);
             this.enemyRageStatuslbl.Name = "enemyRageStatuslbl";
             this.enemyRageStatuslbl.Size = new System.Drawing.Size(143, 29);
@@ -286,7 +289,7 @@
             this.enemyMagiclbl.AutoSize = true;
             this.enemyMagiclbl.BackColor = System.Drawing.Color.Black;
             this.enemyMagiclbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.enemyMagiclbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.enemyMagiclbl.ForeColor = System.Drawing.Color.ForestGreen;
             this.enemyMagiclbl.Location = new System.Drawing.Point(1347, 383);
             this.enemyMagiclbl.Name = "enemyMagiclbl";
             this.enemyMagiclbl.Size = new System.Drawing.Size(137, 29);
@@ -299,7 +302,7 @@
             this.enemyAtklbl.AutoSize = true;
             this.enemyAtklbl.BackColor = System.Drawing.Color.Black;
             this.enemyAtklbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.enemyAtklbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.enemyAtklbl.ForeColor = System.Drawing.Color.GreenYellow;
             this.enemyAtklbl.Location = new System.Drawing.Point(1343, 349);
             this.enemyAtklbl.Name = "enemyAtklbl";
             this.enemyAtklbl.Size = new System.Drawing.Size(141, 29);
@@ -312,7 +315,7 @@
             this.bufflbl.AutoSize = true;
             this.bufflbl.BackColor = System.Drawing.Color.Black;
             this.bufflbl.Font = new System.Drawing.Font("Sitka Subheading", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bufflbl.ForeColor = System.Drawing.SystemColors.Control;
+            this.bufflbl.ForeColor = System.Drawing.Color.OrangeRed;
             this.bufflbl.Location = new System.Drawing.Point(254, 524);
             this.bufflbl.Name = "bufflbl";
             this.bufflbl.Size = new System.Drawing.Size(173, 174);
@@ -357,9 +360,9 @@
             // rageAbilityPic
             // 
             this.rageAbilityPic.Image = global::MyoFantasyI.Properties.Resources.rageAbilityPic;
-            this.rageAbilityPic.Location = new System.Drawing.Point(173, 784);
+            this.rageAbilityPic.Location = new System.Drawing.Point(236, 789);
             this.rageAbilityPic.Name = "rageAbilityPic";
-            this.rageAbilityPic.Size = new System.Drawing.Size(340, 93);
+            this.rageAbilityPic.Size = new System.Drawing.Size(224, 93);
             this.rageAbilityPic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.rageAbilityPic.TabIndex = 24;
             this.rageAbilityPic.TabStop = false;
@@ -406,6 +409,28 @@
             this.startAgainlbl.Text = "To start the game, use Fist Gesture";
             this.startAgainlbl.Visible = false;
             // 
+            // playerMovepic
+            // 
+            this.playerMovepic.Image = global::MyoFantasyI.Properties.Resources.greenLight;
+            this.playerMovepic.Location = new System.Drawing.Point(286, 46);
+            this.playerMovepic.Name = "playerMovepic";
+            this.playerMovepic.Size = new System.Drawing.Size(125, 109);
+            this.playerMovepic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.playerMovepic.TabIndex = 28;
+            this.playerMovepic.TabStop = false;
+            this.playerMovepic.Visible = false;
+            // 
+            // enemyMovepic
+            // 
+            this.enemyMovepic.Image = global::MyoFantasyI.Properties.Resources.redLight;
+            this.enemyMovepic.Location = new System.Drawing.Point(1636, 46);
+            this.enemyMovepic.Name = "enemyMovepic";
+            this.enemyMovepic.Size = new System.Drawing.Size(125, 109);
+            this.enemyMovepic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.enemyMovepic.TabIndex = 29;
+            this.enemyMovepic.TabStop = false;
+            this.enemyMovepic.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -413,6 +438,9 @@
             this.BackgroundImage = global::MyoFantasyI.Properties.Resources.newBackground;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1902, 1033);
+            this.Controls.Add(this.timerlbl);
+            this.Controls.Add(this.enemyMovepic);
+            this.Controls.Add(this.playerMovepic);
             this.Controls.Add(this.startAgainlbl);
             this.Controls.Add(this.youLoselbl);
             this.Controls.Add(this.youWinlbl);
@@ -428,7 +456,6 @@
             this.Controls.Add(this.playerAtklbl);
             this.Controls.Add(this.playerRagelbl);
             this.Controls.Add(this.enemyRagelbl);
-            this.Controls.Add(this.timerlbl);
             this.Controls.Add(this.statusLbl);
             this.Controls.Add(this.enemyHP);
             this.Controls.Add(this.playerHP);
@@ -449,6 +476,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.armDownPic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.waveRightPic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rageAbilityPic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playerMovepic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.enemyMovepic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -483,6 +512,8 @@
         private System.Windows.Forms.Label youWinlbl;
         private System.Windows.Forms.Label youLoselbl;
         private System.Windows.Forms.Label startAgainlbl;
+        private System.Windows.Forms.PictureBox playerMovepic;
+        private System.Windows.Forms.PictureBox enemyMovepic;
     }
 }
 

@@ -36,6 +36,7 @@ namespace MyoFantasyI
         SoundPlayer enemyRageSound = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\enemyRage.wav");
         SoundPlayer enemyWonSound = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\enemyWonSound.wav");
         SoundPlayer playerWonSound = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\youWin.wav");
+        SoundPlayer playerBuffSound = new SoundPlayer(@"C:\Users\Paddy\Desktop\MyoApp\MyoFantasyI\MyoFantasyI\Sounds\buff.wav");
 
         //Game variables
         private Boolean isGameStarted = false;
@@ -151,7 +152,11 @@ namespace MyoFantasyI
                 //Making sure player has enough rage to buff his ability
                 if (playerRage >= 1)
                 {
+                    bufflbl.Invoke(new MethodInvoker(delegate { bufflbl.ForeColor = System.Drawing.Color.DeepSkyBlue; }));
+                    playerBuffSound.Play();
                     updateBuffMove();
+                    System.Threading.Thread.Sleep(500);
+                    bufflbl.Invoke(new MethodInvoker(delegate { bufflbl.ForeColor = System.Drawing.Color.OrangeRed; }));
                 }
                 else
                 {
@@ -166,9 +171,13 @@ namespace MyoFantasyI
             //IF so, call rage ability, play sound and vibrate.
             if (isGameStarted == true && isPlayerMove == true && playerRage >= 5)
             {
+                rageAbilitylbl.Invoke(new MethodInvoker(delegate { rageAbilitylbl.ForeColor = System.Drawing.Color.DeepSkyBlue; }));
                 updateRageAbilityMove();
                 playerRageAbility.Play();
                 e.Myo.Vibrate(VibrationType.Medium);
+                System.Threading.Thread.Sleep(500);
+                attacklbl.Invoke(new MethodInvoker(delegate { attacklbl.ForeColor = System.Drawing.Color.OrangeRed; }));
+
             }
             else if (isGameStarted == true && isPlayerMove == true && playerRage < 5)
             {
@@ -198,8 +207,11 @@ namespace MyoFantasyI
             {
                 if (isPlayerMove == true && isGameStarted == true && isGameOver == false)
                 {
+                    attacklbl.Invoke(new MethodInvoker(delegate { attacklbl.ForeColor = System.Drawing.Color.DeepSkyBlue; }));
                     swordSlash.Play();
                     updateAttackMove();
+                    System.Threading.Thread.Sleep(500);
+                    attacklbl.Invoke(new MethodInvoker(delegate { attacklbl.ForeColor = System.Drawing.Color.OrangeRed; }));
                 }
             }
 
@@ -208,8 +220,11 @@ namespace MyoFantasyI
             {
                 if (isPlayerMove == true && isGameStarted == true && playerRage >= 1 && isGameOver == false)
                 {
+                    heallbl.Invoke(new MethodInvoker(delegate { heallbl.ForeColor = System.Drawing.Color.DeepSkyBlue; }));
                     playerHeal.Play();
                     updateHealMove();
+                    System.Threading.Thread.Sleep(500);
+                    heallbl.Invoke(new MethodInvoker(delegate { heallbl.ForeColor = System.Drawing.Color.OrangeRed; }));
                 }
                 else if(isPlayerMove == true && isGameStarted == true)
                 {
@@ -237,7 +252,7 @@ namespace MyoFantasyI
                 //If timeleft is 10 or below but greater than 0, show message that user has only 10 seconds left.
                 if (timeLeft <= 10 && timeLeft > 0)
                 {
-                    timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Text = "You only have 10 seconds left!"; }));
+                    timerlbl.Invoke(new MethodInvoker(delegate { timerlbl.Text = "You only have " + timeLeft.ToString() + " seconds left!"; }));
                 }
                 //If time is 0 or less, end player move.
                 else if (timeLeft <= 0)
@@ -249,6 +264,7 @@ namespace MyoFantasyI
                         statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You missed your move!\n\tEnemies move!"; }));
                         isPlayerMove = false;
                         isEnemyMove = true;
+                        changeLights();
                     }
                 }
 
@@ -259,6 +275,7 @@ namespace MyoFantasyI
                     if (timeLeft <= 28 && isEnemyMove == false)
                     {
                         isPlayerMove = true;
+                        changeLights();
                     }
                     else if (isEnemyMove == true)
                     {
@@ -313,6 +330,7 @@ namespace MyoFantasyI
                 statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You dealt " + attackStrength.ToString() + " damage to the enemy!\n\tEnemies move!"; }));
                 isPlayerMove = false;
                 isEnemyMove = true;
+                changeLights();
                 timeLeft = 30;
             }           
         }
@@ -336,7 +354,8 @@ namespace MyoFantasyI
             statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You healed yourself by " + healAmount.ToString() + " hit points!\n\tEnemies move!"; }));
             checkIfPlayerCanUseRageAbility();
             isPlayerMove = false;
-            isEnemyMove = true;           
+            isEnemyMove = true;
+            changeLights();
             timeLeft = 30;
         }
 
@@ -393,6 +412,7 @@ namespace MyoFantasyI
                 checkIfPlayerCanUseRageAbility();
                 isPlayerMove = false;
                 isEnemyMove = true;
+                changeLights();
                 timeLeft = 30;
             }     
         }
@@ -407,6 +427,7 @@ namespace MyoFantasyI
             statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "You buffed your attack by 15 damage!\n\tEnemies move!"; }));
             isPlayerMove = false;
             isEnemyMove = true;
+            changeLights();
             timeLeft = 30;
         }
 #endregion
@@ -491,6 +512,7 @@ namespace MyoFantasyI
                 statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy dealt " + attackStrength.ToString() + " damage to you!\n\tIt's your move!"; }));
                 checkIfPlayerCanUseRageAbility();
                 isEnemyMove = false;
+                changeLights();
                 timeLeft = 30;
             }            
         }
@@ -513,6 +535,7 @@ namespace MyoFantasyI
             enemyRagelbl.Invoke(new MethodInvoker(delegate { enemyRagelbl.Text = "Rage: " + enemyRage.ToString() + " / 10."; }));
             statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy healed himself by " + healAmount.ToString() + " hit points!\n\tIt's your move!"; }));
             isEnemyMove = false;
+            changeLights();
             timeLeft = 30;
         }
 
@@ -568,6 +591,7 @@ namespace MyoFantasyI
                 statusLbl.Invoke(new MethodInvoker(delegate { statusLbl.Text = "Enemy dealt " + attackStrength.ToString() + " damage to you,\nand healed himself by " + healAmount.ToString() + " hit points!\n\tIt's your move!"; }));
                 checkIfPlayerCanUseRageAbility();
                 isEnemyMove = false;
+                changeLights();
                 timeLeft = 30;
             }                      
         }
@@ -610,7 +634,7 @@ namespace MyoFantasyI
         private void enemy2()
         {
             //Setting enemy 2
-            enemyAttack = 225;
+            enemyAttack = 200;
             enemyHealth = 750;
             enemyCurrHealth = enemyHealth;
             enemyMagic = 50;
@@ -652,7 +676,7 @@ namespace MyoFantasyI
             playerHealth = 1000;
             playerCurrHealth = playerHealth;
             playerAttack = 125;
-            playerMagic = 150;
+            playerMagic = 175;
             playerRage = 0;
             playerRageStatus = "Medium";
             isPlayerMove = true;
@@ -664,7 +688,8 @@ namespace MyoFantasyI
             isPlayerMove = false;
             isEnemyMove = false;
             isGameOver = true;
-            isGameStarted = false;          
+            isGameStarted = false;
+            changeLights();
             enemyPic.Invoke(new MethodInvoker(delegate { enemyPic.Visible = false; }));
             characterPic.Invoke(new MethodInvoker(delegate { characterPic.Visible = false; }));
             playerHP.Invoke(new MethodInvoker(delegate { playerHP.Visible = false; }));
@@ -687,6 +712,8 @@ namespace MyoFantasyI
             armDownPic.Invoke(new MethodInvoker(delegate { armDownPic.Visible = false; }));
             rageAbilityPic.Invoke(new MethodInvoker(delegate { rageAbilityPic.Visible = false; }));
             rageAbilitylbl.Invoke(new MethodInvoker(delegate { rageAbilitylbl.Visible = false; }));
+            playerMovepic.Invoke(new MethodInvoker(delegate { playerMovepic.Visible = false; }));
+            enemyMovepic.Invoke(new MethodInvoker(delegate { enemyMovepic.Visible = false; }));
             
             //If enemy won, display you lose and play sound. Set whoWon back to 0.
             if (whoWon == 1)
@@ -703,6 +730,43 @@ namespace MyoFantasyI
                 startAgainlbl.Invoke(new MethodInvoker(delegate { startAgainlbl.Visible = true; }));
                 playerWonSound.Play();
                 whoWon = 0;
+            }
+        }
+
+        private void changeLights()
+        {
+            if(isPlayerMove == true && isEnemyMove == false)
+            {
+                playerMovepic.Invoke(new MethodInvoker(delegate
+                {
+                    playerMovepic.Image = Image.FromFile("C:/Users/Paddy/Desktop/MyoApp/MyoFantasyI/MyoFantasyI/Images/greenLight.png");
+                }));
+                enemyMovepic.Invoke(new MethodInvoker(delegate
+                {
+                    enemyMovepic.Image = Image.FromFile("C:/Users/Paddy/Desktop/MyoApp/MyoFantasyI/MyoFantasyI/Images/redLight.png");
+                }));
+            }
+            else if (isEnemyMove == true && isPlayerMove == false)
+            {
+                playerMovepic.Invoke(new MethodInvoker(delegate
+                {
+                    playerMovepic.Image = Image.FromFile("C:/Users/Paddy/Desktop/MyoApp/MyoFantasyI/MyoFantasyI/Images/redLight.png");
+                }));
+                enemyMovepic.Invoke(new MethodInvoker(delegate
+                {
+                    enemyMovepic.Image = Image.FromFile("C:/Users/Paddy/Desktop/MyoApp/MyoFantasyI/MyoFantasyI/Images/greenLight.png");
+                }));
+            }
+            else
+            {
+                playerMovepic.Invoke(new MethodInvoker(delegate
+                {
+                    playerMovepic.Image = Image.FromFile("C:/Users/Paddy/Desktop/MyoApp/MyoFantasyI/MyoFantasyI/Images/redLight.png");
+                }));
+                enemyMovepic.Invoke(new MethodInvoker(delegate
+                {
+                    enemyMovepic.Image = Image.FromFile("C:/Users/Paddy/Desktop/MyoApp/MyoFantasyI/MyoFantasyI/Images/redLight.png");
+                }));
             }
         }
 
@@ -745,6 +809,8 @@ namespace MyoFantasyI
             youLoselbl.Invoke(new MethodInvoker(delegate { youLoselbl.Visible = false; }));
             youWinlbl.Invoke(new MethodInvoker(delegate { youWinlbl.Visible = false; }));
             startAgainlbl.Invoke(new MethodInvoker(delegate { startAgainlbl.Visible = false; }));
+            playerMovepic.Invoke(new MethodInvoker(delegate { playerMovepic.Visible = true; }));
+            enemyMovepic.Invoke(new MethodInvoker(delegate { enemyMovepic.Visible = true; }));
         }
 
         private void checkIfPlayerCanUseRageAbility()

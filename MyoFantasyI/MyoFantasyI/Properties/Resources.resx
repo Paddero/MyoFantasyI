@@ -121,6 +121,9 @@
   <data name="enemy1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\enemy1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="rageAbilityPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\rageAbilityPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="background" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\background.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -139,7 +142,10 @@
   <data name="character" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\character.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="rageAbilityPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\rageAbilityPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="greenLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\greenLight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="redLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\redLight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

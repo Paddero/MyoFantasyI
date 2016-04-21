@@ -103,6 +103,16 @@ namespace MyoFantasyI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap greenLight {
+            get {
+                object obj = ResourceManager.GetObject("greenLight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap newBackground {
             get {
                 object obj = ResourceManager.GetObject("newBackground", resourceCulture);
@@ -116,6 +126,16 @@ namespace MyoFantasyI.Properties {
         internal static System.Drawing.Bitmap rageAbilityPic {
             get {
                 object obj = ResourceManager.GetObject("rageAbilityPic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap redLight {
+            get {
+                object obj = ResourceManager.GetObject("redLight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
